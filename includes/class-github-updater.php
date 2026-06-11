@@ -24,7 +24,7 @@ class GitHub_Updater {
 
     const TRANSIENT_KEY    = 'easy_mcp_ai_github_release';
     const TRANSIENT_EXPIRY = 12 * HOUR_IN_SECONDS;
-    const GITHUB_REPO      = 'InsafInhaam/easy-mcp-ai';
+    const GITHUB_REPO      = 'throughout-org/easy-mcp-ai';
     const PLUGIN_SLUG      = 'easy-mcp-ai';
     const CHECK_PARAM      = 'easy_mcp_check_update';
     const CHECK_NONCE      = 'easy_mcp_check_update_nonce';
