@@ -348,6 +348,21 @@ class Tool_Registry {
             // Database — read-only SQL queries
             'Easy_MCP_AI\\Tools\\Database\\Run_DB_Query',
 
+            // AEO — Answer Engine Optimisation
+            'Easy_MCP_AI\\Tools\\AEO\\Get_Faq_Blocks',
+            'Easy_MCP_AI\\Tools\\AEO\\Create_Faq_Block',
+            'Easy_MCP_AI\\Tools\\AEO\\Audit_Answer_Readiness',
+
+            // E-E-A-T / HEO — Human Experience Optimisation
+            'Easy_MCP_AI\\Tools\\EEAT\\Get_Eeat_Signals',
+            'Easy_MCP_AI\\Tools\\EEAT\\Get_Content_Freshness',
+            'Easy_MCP_AI\\Tools\\EEAT\\Get_Internal_Links',
+            'Easy_MCP_AI\\Tools\\EEAT\\Suggest_Internal_Links',
+
+            // Reporting — site-wide aggregated audits
+            'Easy_MCP_AI\\Tools\\Reporting\\Seo_Audit_Site',
+            'Easy_MCP_AI\\Tools\\Reporting\\Content_Gap_Report',
+
         );
         $plugin_namespaces = array(
             'Easy_MCP_AI\\Tools\\WooCommerce\\',

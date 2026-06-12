@@ -4,11 +4,11 @@ Tags: mcp, ai, ai-seo, claude, mcp-server
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.9.2
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Connect Claude, ChatGPT & any AI to WordPress. Manage your entire site by chat — content, media, GA4, Search Console, SEO & more. 214 tools. Free.
+Connect Claude, ChatGPT & any AI to WordPress. Manage your entire site by chat — content, media, GA4, Search Console, SEO, GEO, AEO, E-E-A-T & more. 233 tools. Free.
 
 == Description ==
 
@@ -18,7 +18,7 @@ No Node.js. No external proxy. No complicated setup. Just install, generate a to
 
 **At a glance:**
 
-* **214 tools** across posts, pages, media, users, comments, menus, Google Analytics 4, Google Search Console, Semrush, DataforSEO, and more
+* **233 tools** across posts, pages, media, users, comments, menus, Google Analytics 4, Google Search Console, Semrush, DataforSEO, SEO/GEO/AEO/E-E-A-T, filesystem, database, and more
 * **1-click OAuth 2.0/2.1** with per-scope consent (Claude Desktop, Cursor, etc.)
 * **Plugin integrations** — WooCommerce, ACF, The Events Calendar, BuddyPress, Yoast, Rank Math, AIOSEO
 * **Google Analytics 4 & Google Search Console** — ask your AI about traffic, top pages, conversions, search queries, clicks, impressions, and indexing status
@@ -79,6 +79,16 @@ Once connected, your **AI agent** can handle everything you'd normally do in the
 **Semrush** — pull domain overviews, keyword research, organic competitors, keyword difficulty and related keywords, question phrases, and backlink overview / referring domains / anchors for any target
 
 **DataforSEO** — run on-page SEO audits on any URL, check keyword search volumes and trends, pull live SERP results, analyse backlinks, and look up ranked keywords for any domain
+
+**AEO (Answer Engine Optimisation)** — extract and create FAQ blocks, audit posts for featured-snippet eligibility, score opening paragraphs, headings, and list structure for "People also ask" capture
+
+**E-E-A-T / HEO (Human Experience Optimisation)** — full per-post E-E-A-T audit across Experience, Expertise, Authoritativeness, and Trustworthiness; find stale content by staleness age; get all internal links in a post; discover internal linking opportunities between related posts
+
+**Site-wide SEO Reporting** — master site audit (schema coverage %, stale content, E-E-A-T score distribution, AEO/GEO readiness); content gap report to compare target topics against existing coverage
+
+**wp-content Filesystem** — Claude can read any theme file, plugin file, or file anywhere under `wp-content/` to review source code, debug templates, or audit plugin configs
+
+**Raw SQL (read-only)** — run SELECT queries against any table with `{prefix}` substitution; blocked from any write or destructive operation
 
 **Any Plugin** — automatically connects to plugins that support WordPress 6.9+ Abilities API, no custom code needed
 
@@ -422,6 +432,26 @@ Please report security bugs found in the source code of the Easy MCP AI for Word
 
 == Changelog ==
 
+= 2.0.0 =
+* **Phase 3 — AEO (Answer Engine Optimisation):** 3 new tools — `wp_get_faq_blocks` (extract all FAQ/Q&A blocks from a post), `wp_create_faq_block` (append a FAQPage-schema-ready block + JSON-LD in one call), `wp_audit_answer_readiness` (score posts on featured-snippet signals: direct opening answer, question headings, FAQ content, bullet lists)
+* **Phase 4 — E-E-A-T / HEO (Human Experience Optimisation):** 4 new tools — `wp_get_eeat_signals` (full per-post E-E-A-T audit with scores across Experience, Expertise, Authoritativeness, Trustworthiness), `wp_get_content_freshness` (list stale posts not updated within N days), `wp_get_internal_links` (list all internal links in a post with resolved titles/IDs), `wp_suggest_internal_links` (find related posts to link to or from, scored by topic overlap)
+* **Phase 5 — Reporting & Aggregation:** 2 new tools — `wp_seo_audit_site` (master site-wide audit: schema coverage %, stale count, E-E-A-T distribution, AEO/GEO readiness, top issues, prioritised fix list), `wp_content_gap_report` (compare target topics against existing posts to surface uncovered areas)
+* Total tool count: **233**
+* No breaking changes. New tool directories `aeo/`, `eeat/`, `reporting/` are loaded automatically.
+
+= 1.9.2 =
+* Added GitHub auto-updater — "Check for Updates" link on the Plugins page; one-click update from GitHub releases
+* Added wp-content filesystem tools: `wp_list_wp_content`, `wp_get_wp_content_file` — read any file under wp-content/
+
+= 1.9.1 =
+* Added wp-content filesystem tools — list and read files in any directory under wp-content/
+
+= 1.9.0 =
+* **Phase 2 — GEO (Generative Engine Optimisation):** 4 new tools — `wp_get_llms_txt`, `wp_update_llms_txt`, `wp_get_entity_context`, `wp_audit_geo_readiness`
+
+= 1.8.0 =
+* **Phase 1 — Schema / Structured Data:** 4 new tools — `wp_get_post_schema`, `wp_update_post_schema`, `wp_audit_schema_coverage`, `wp_list_schema_types`; JSON-LD auto-output in `<head>` via `_easy_mcp_schema` post meta
+
 = 1.7.2 =
 * Fixed: AI connections that dropped when an access token expired now reconnect on their own instead of silently failing — your AI client refreshes its login and keeps working.
 * Fixed: posts and pages created or edited by AI no longer corrupt Gutenberg blocks that contain special characters (such as `&` in block settings), which previously caused the editor's "this block contains unexpected content" recovery prompt.
@@ -525,6 +555,9 @@ Please report security bugs found in the source code of the Easy MCP AI for Word
 * Fully internationalized (i18n ready)
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+No breaking changes. Adds 10 new tools across AEO, E-E-A-T/HEO, and Reporting categories. All new tools are loaded automatically — no configuration required.
 
 = 1.7.2 =
 Bug-fix release. AI connections now recover automatically when a login token expires, and AI-edited Gutenberg blocks with special characters are no longer corrupted. No breaking changes.
