@@ -468,7 +468,6 @@ class Plugin {
         
         if ( ! empty( \get_option( \Easy_MCP_AI\Semrush\Semrush_Client::OPTION_API_KEY, '' ) ) ) {
             $tool_dirs[] = 'semrush';
-            $tool_dirs[] = 'rankout';
         }
         
         require_once EASY_MCP_AI_PLUGIN_DIR . 'includes/tools/users/trait-user-meta-auth-guard.php';

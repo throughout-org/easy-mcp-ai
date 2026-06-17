@@ -324,7 +324,6 @@ class Tool_Registry {
             'Easy_MCP_AI\\Tools\\Semrush\\Anchors',
             'Easy_MCP_AI\\Tools\\Semrush\\Url_Organic_Keywords',
             'Easy_MCP_AI\\Tools\\Semrush\\Api_Units_Balance',
-            'Easy_MCP_AI\\Tools\\Rankout\\Rankout_Sync_Semrush_Snapshot',
 
             // GEO — Generative Engine Optimisation
             'Easy_MCP_AI\\Tools\\GEO\\Get_Llms_Txt',
@@ -375,7 +374,6 @@ class Tool_Registry {
             'Easy_MCP_AI\\Tools\\GA\\',
             'Easy_MCP_AI\\Tools\\DFS\\',
             'Easy_MCP_AI\\Tools\\Semrush\\',
-            'Easy_MCP_AI\\Tools\\Rankout\\',
         );
 
         foreach ( $tool_classes as $class ) {
