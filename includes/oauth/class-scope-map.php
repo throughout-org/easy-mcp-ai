@@ -81,6 +81,7 @@ class Scope_Map {
             'wp_semrush_url_organic_keywords',
             'wp_semrush_api_units_balance',
         ),
+        'mcp:rankout:write'      => array( 'wp_rankout_sync_semrush_snapshot' ),
     );
 
     
@@ -119,6 +120,7 @@ class Scope_Map {
         'ga'          => 'Google Analytics',
         'dfs'         => 'DataforSEO',
         'semrush'     => 'Semrush',
+        'rankout'     => 'Rankout',
     );
 
     
@@ -140,6 +142,7 @@ class Scope_Map {
         'ga'          => array(),
         'dfs'         => array(),
         'semrush'     => array(),
+        'rankout'     => array(),
     );
 
     
@@ -162,6 +165,9 @@ class Scope_Map {
                 && ! empty( \get_option( 'easy_mcp_ai_dfs_api_password', '' ) );
         }
         if ( 'semrush' === $slug ) {
+            return ! empty( \get_option( 'easy_mcp_ai_semrush_api_key', '' ) );
+        }
+        if ( 'rankout' === $slug ) {
             return ! empty( \get_option( 'easy_mcp_ai_semrush_api_key', '' ) );
         }
         if ( ! isset( self::PLUGIN_DETECTION_CLASSES[ $slug ] ) ) {
@@ -530,6 +536,7 @@ class Scope_Map {
                 'ga'          => __( 'Google Analytics', 'easy-mcp-ai' ),
                 'dfs'         => __( 'DataforSEO', 'easy-mcp-ai' ),
                 'semrush'     => __( 'Semrush', 'easy-mcp-ai' ),
+                'rankout'     => __( 'Rankout', 'easy-mcp-ai' ),
                 'term_meta'   => __( 'Term Meta', 'easy-mcp-ai' ),
                 'user_meta'   => __( 'User Meta', 'easy-mcp-ai' ),
                 'appearance'  => __( 'Site Appearance (templates & global styles)', 'easy-mcp-ai' ),
