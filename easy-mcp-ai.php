@@ -18,11 +18,21 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'EASY_MCP_AI_VERSION', '2.0.0' );
-define( 'EASY_MCP_AI_PLUGIN_FILE', __FILE__ );
-define( 'EASY_MCP_AI_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'EASY_MCP_AI_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'EASY_MCP_AI_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+if ( ! defined( 'EASY_MCP_AI_VERSION' ) ) {
+    define( 'EASY_MCP_AI_VERSION', '2.0.0' );
+}
+if ( ! defined( 'EASY_MCP_AI_PLUGIN_FILE' ) ) {
+    define( 'EASY_MCP_AI_PLUGIN_FILE', __FILE__ );
+}
+if ( ! defined( 'EASY_MCP_AI_PLUGIN_DIR' ) ) {
+    define( 'EASY_MCP_AI_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+if ( ! defined( 'EASY_MCP_AI_PLUGIN_URL' ) ) {
+    define( 'EASY_MCP_AI_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
+if ( ! defined( 'EASY_MCP_AI_PLUGIN_BASENAME' ) ) {
+    define( 'EASY_MCP_AI_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+}
 
 require_once EASY_MCP_AI_PLUGIN_DIR . 'includes/class-plugin.php';
 
