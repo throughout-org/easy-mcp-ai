@@ -125,7 +125,8 @@ class Tool_Registry {
             'Easy_MCP_AI\\Tools\\Plugins\\List_Plugins',
             'Easy_MCP_AI\\Tools\\Themes\\List_Themes',
             'Easy_MCP_AI\\Tools\\Themes\\Get_Active_Theme',
-            
+            'Easy_MCP_AI\\Tools\\Site_Health\\Get_Site_Health',
+
             'Easy_MCP_AI\\Tools\\Revisions\\List_Revisions',
             'Easy_MCP_AI\\Tools\\Revisions\\Get_Revision',
             'Easy_MCP_AI\\Tools\\Revisions\\Delete_Revision',
