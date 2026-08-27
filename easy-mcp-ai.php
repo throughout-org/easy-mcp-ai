@@ -12,7 +12,18 @@
  * Domain Path: /languages
  * Requires at least: 6.0
  * Requires PHP: 7.4
+ * Update URI: false
  */
+
+// Update URI: false (above) tells WordPress core's own update-checker to
+// never look for updates for this plugin from any source — without it,
+// WordPress still matches this fork against the original "easy-mcp-ai"
+// plugin (by folder/slug) and offers its updates in wp-admin. Since this
+// is a heavily modified fork (RankOut's own tools, RBAC, and dashboard
+// integration layered on top), installing that "update" would silently
+// overwrite all of it with the unmodified original. This header is the
+// officially documented way to opt a fork out of that entirely (WP 5.8+,
+// see https://make.wordpress.org/core/2021/06/29/introducing-update-uri-plugin-header-in-wordpress-5-8/).
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -40,6 +51,15 @@ register_activation_hook( __FILE__, array( 'Easy_MCP_AI\\Activator', 'activate' 
 register_deactivation_hook( __FILE__, array( 'Easy_MCP_AI\\Deactivator', 'deactivate' ) );
 
 Easy_MCP_AI\Plugin::instance();
+
+// Some hosts and security plugins (Wordfence, Solid Security, and several
+// managed-WordPress hosts) disable Application Passwords by default as a
+// hardening measure. RankOut's dashboard depends on one being generated
+// for Site Health's WordPress REST checks, so this plugin — whose whole
+// purpose is exposing site data to that dashboard — re-enables the
+// feature unconditionally wherever it's installed, rather than requiring
+// a separate manual fix on every client site.
+add_filter( 'wp_is_application_passwords_available', '__return_true' );
 
 add_filter(
     'plugin_action_links_' . EASY_MCP_AI_PLUGIN_BASENAME,
