@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.1
+
+- Rebranded the distribution as RankOut Connector.
+- Added automatic, controlled WordPress updates from public GitHub Releases.
+- Added a release workflow that builds a clean installable ZIP, checksum, and provenance attestation.
+- Added fail-closed SHA-256 verification before an update package is installed.
+- Preserved the legacy WordPress folder and main-file basename for safe in-place updates.
+
 All notable changes to Easy MCP AI are documented here.  
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).  
 Versions follow [Semantic Versioning](https://semver.org/).
@@ -95,7 +103,7 @@ Parameters: `topics` (array, required), `post_type`, `threshold` (0–100, defau
 ## [1.9.2] — 2026-05-xx
 
 ### Added
-- GitHub auto-updater (`class-github-updater.php`) — plugin checks `throughout-org/easy-mcp-ai` releases every 12 h via transient cache; "Check for Updates" link on Plugins page busts the cache and forces a fresh check
+- GitHub auto-updater (`class-github-updater.php`) — plugin checks the configured GitHub releases every 12 h; "Check for Updates" link on Plugins page busts the cache and forces a fresh check
 - `wp_list_wp_content` — list directories and files anywhere under `wp-content/`
 - `wp_get_wp_content_file` — read any file under `wp-content/` (requires `manage_options`)
 

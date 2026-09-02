@@ -22,9 +22,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class GitHub_Updater {
 
-    const TRANSIENT_KEY    = 'easy_mcp_ai_github_release';
+    const TRANSIENT_KEY    = 'rankout_connector_github_release_v1';
     const TRANSIENT_EXPIRY = 12 * HOUR_IN_SECONDS;
-    const GITHUB_REPO      = 'throughout-org/easy-mcp-ai';
+    const GITHUB_REPO      = 'throughout-org/rankout-connector';
+    const RELEASE_ASSET    = 'rankout-connector.zip';
     const PLUGIN_SLUG      = 'easy-mcp-ai';
     const CHECK_PARAM      = 'easy_mcp_check_update';
     const CHECK_NONCE      = 'easy_mcp_check_update_nonce';
@@ -41,8 +42,42 @@ class GitHub_Updater {
         add_action( 'admin_init', array( $this, 'maybe_handle_force_check' ) );
         add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'inject_update' ) );
         add_filter( 'plugins_api', array( $this, 'plugin_popup_info' ), 20, 3 );
+        add_filter( 'upgrader_pre_download', array( $this, 'verify_package_download' ), 10, 4 );
         add_filter( 'upgrader_source_selection', array( $this, 'fix_source_dir' ), 10, 4 );
         add_filter( 'plugin_row_meta', array( $this, 'add_check_link' ), 10, 2 );
+    }
+
+    /**
+     * Download the exact release asset and fail closed unless its SHA-256
+     * matches the digest GitHub calculated when the asset was uploaded.
+     */
+    public function verify_package_download( $reply, $package, $upgrader, $hook_extra ) {
+        if ( false !== $reply || empty( $hook_extra['plugin'] ) || $this->plugin_basename !== $hook_extra['plugin'] ) {
+            return $reply;
+        }
+
+        $release = $this->get_latest_release();
+        $asset   = $release ? $this->release_asset( $release ) : null;
+        if ( ! $asset || $package !== $asset['url'] || empty( $asset['digest'] ) ) {
+            return new \WP_Error( 'rankout_update_unverified', __( 'RankOut Connector could not verify the release package.', 'easy-mcp-ai' ) );
+        }
+
+        if ( ! function_exists( 'download_url' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+        }
+        $file = download_url( $package, 300 );
+        if ( is_wp_error( $file ) ) {
+            return $file;
+        }
+
+        $expected = strtolower( preg_replace( '/^sha256:/', '', $asset['digest'] ) );
+        $actual   = hash_file( 'sha256', $file );
+        if ( ! $actual || ! preg_match( '/^[a-f0-9]{64}$/', $expected ) || ! hash_equals( $expected, strtolower( $actual ) ) ) {
+            wp_delete_file( $file );
+            return new \WP_Error( 'rankout_update_checksum_failed', __( 'RankOut Connector update verification failed. The package was not installed.', 'easy-mcp-ai' ) );
+        }
+
+        return $file;
     }
 
     // -------------------------------------------------------------------------
@@ -81,7 +116,11 @@ class GitHub_Updater {
             return $transient;
         }
 
-        $latest = ltrim( $release['tag_name'], 'v' );
+        $latest = $this->release_version( $release );
+
+        if ( ! $latest ) {
+            return $transient;
+        }
 
         if ( version_compare( $this->current_version, $latest, '<' ) ) {
             $update                  = new \stdClass();
@@ -90,7 +129,7 @@ class GitHub_Updater {
             $update->plugin          = $this->plugin_basename;
             $update->new_version     = $latest;
             $update->url             = 'https://github.com/' . self::GITHUB_REPO;
-            $update->package         = $this->zip_url( $release['tag_name'] );
+            $update->package         = $this->zip_url( $release );
             $update->icons           = array();
             $update->banners         = array();
             $update->banners_rtl     = array();
@@ -108,7 +147,7 @@ class GitHub_Updater {
             $no_update->plugin  = $this->plugin_basename;
             $no_update->new_version = $latest;
             $no_update->url     = 'https://github.com/' . self::GITHUB_REPO;
-            $no_update->package = $this->zip_url( $release['tag_name'] );
+            $no_update->package = $this->zip_url( $release );
             $transient->no_update[ $this->plugin_basename ] = $no_update;
         }
 
@@ -131,22 +170,25 @@ class GitHub_Updater {
             return $result;
         }
 
-        $latest  = ltrim( $release['tag_name'], 'v' );
+        $latest  = $this->release_version( $release );
+        if ( ! $latest ) {
+            return $result;
+        }
         $body    = ! empty( $release['body'] ) ? nl2br( esc_html( $release['body'] ) ) : 'See the <a href="https://github.com/' . self::GITHUB_REPO . '/releases" target="_blank">GitHub releases page</a> for changelog.';
 
         $info                        = new \stdClass();
-        $info->name                  = 'Easy MCP AI';
+        $info->name                  = 'RankOut Connector';
         $info->slug                  = self::PLUGIN_SLUG;
         $info->version               = $latest;
-        $info->author                = '<a href="https://easymcpai.com" target="_blank">EasyMCPAI</a>';
+        $info->author                = '<a href="https://rankout.app" target="_blank">RankOut</a>';
         $info->homepage              = 'https://github.com/' . self::GITHUB_REPO;
         $info->requires              = '6.0';
         $info->requires_php          = '7.4';
         $info->downloaded            = 0;
         $info->last_updated          = ! empty( $release['published_at'] ) ? substr( $release['published_at'], 0, 10 ) : '';
-        $info->download_link         = $this->zip_url( $release['tag_name'] );
+        $info->download_link         = $this->zip_url( $release );
         $info->sections              = array(
-            'description' => 'Connect Claude, ChatGPT & any AI to WordPress via the Model Context Protocol.',
+            'description' => 'Securely connect a WordPress site to RankOut for research, approved changes, and measurement.',
             'changelog'   => $body,
         );
 
@@ -219,7 +261,8 @@ class GitHub_Updater {
             array(
                 'timeout' => 15,
                 'headers' => array(
-                    'Accept'     => 'application/vnd.github.v3+json',
+                    'Accept'               => 'application/vnd.github+json',
+                    'X-GitHub-Api-Version' => '2022-11-28',
                     'User-Agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . home_url(),
                 ),
             )
@@ -233,7 +276,7 @@ class GitHub_Updater {
 
         $release = json_decode( wp_remote_retrieve_body( $response ), true );
 
-        if ( empty( $release['tag_name'] ) ) {
+        if ( empty( $release['tag_name'] ) || ! $this->release_asset_url( $release ) ) {
             set_transient( self::TRANSIENT_KEY, array(), HOUR_IN_SECONDS );
             return null;
         }
@@ -247,15 +290,36 @@ class GitHub_Updater {
         delete_transient( self::TRANSIENT_KEY );
     }
 
-    /**
-     * GitHub archive download URL for a given tag.
-     * Produces: https://github.com/{owner}/{repo}/archive/refs/tags/{tag}.zip
-     */
-    private function zip_url( string $tag ): string {
-        return sprintf(
-            'https://github.com/%s/archive/refs/tags/%s.zip',
-            self::GITHUB_REPO,
-            $tag
-        );
+    private function release_version( array $release ): ?string {
+        $version = isset( $release['tag_name'] ) ? ltrim( (string) $release['tag_name'], 'v' ) : '';
+        return preg_match( '/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/', $version ) ? $version : null;
+    }
+
+    private function release_asset( array $release ): ?array {
+        if ( empty( $release['assets'] ) || ! is_array( $release['assets'] ) ) {
+            return null;
+        }
+        foreach ( $release['assets'] as $asset ) {
+            if ( isset( $asset['name'], $asset['browser_download_url'] ) && self::RELEASE_ASSET === $asset['name'] ) {
+                $url = esc_url_raw( $asset['browser_download_url'] );
+                if ( 'github.com' !== wp_parse_url( $url, PHP_URL_HOST ) ) {
+                    return null;
+                }
+                return array(
+                    'url'    => $url,
+                    'digest' => isset( $asset['digest'] ) ? (string) $asset['digest'] : '',
+                );
+            }
+        }
+        return null;
+    }
+
+    private function release_asset_url( array $release ): ?string {
+        $asset = $this->release_asset( $release );
+        return $asset ? $asset['url'] : null;
+    }
+
+    private function zip_url( array $release ): string {
+        return $this->release_asset_url( $release ) ?: '';
     }
 }

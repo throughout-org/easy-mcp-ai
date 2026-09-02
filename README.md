@@ -2,7 +2,7 @@
 
 > **Connect Claude, ChatGPT & any AI to WordPress. Manage your entire site by chat — content, media, GA4, Search Console, SEO, GEO, AEO, E-E-A-T & more. 233 tools. Free.**
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/throughout-org/easy-mcp-ai/releases)
+[![Version](https://img.shields.io/badge/version-2.0.1-blue)](https://github.com/throughout-org/rankout-connector/releases)
 [![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-21759b)](https://wordpress.org)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-8892bf)](https://php.net)
 [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green)](https://www.gnu.org/licenses/gpl-2.0.html)
@@ -423,4 +423,4 @@ GPL-2.0-or-later — see [LICENSE](https://www.gnu.org/licenses/gpl-2.0.html)
 
 ---
 
-Developed by [EasyMCPAI](https://easymcpai.com) · [WordPress.org](https://wordpress.org/plugins/easy-mcp-ai/) · [GitHub](https://github.com/throughout-org/easy-mcp-ai)
+Maintained by [RankOut](https://rankout.app) · [GitHub](https://github.com/throughout-org/rankout-connector)

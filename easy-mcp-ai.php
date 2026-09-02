@@ -1,36 +1,30 @@
 <?php
 /**
- * Plugin Name: Easy MCP AI – Claude, ChatGPT & SEO Data Connector (Modified by Throughout)
- * Plugin URI:  https://easymcpai.com
+ * Plugin Name: RankOut Connector
+ * Plugin URI:  https://rankout.app/wordpress-connector/
  * Description: Connect Claude, ChatGPT & any AI to WordPress. Manage your entire site by chat — content, media, GA4, Search Console, SEO, GEO, AEO, E-E-A-T & more. 233 tools. Free.
- * Version:     2.0.0
- * Author:      EasyMCPAI
- * Author URI:
+ * Version:     2.0.1
+ * Author:      RankOut
+ * Author URI:  https://rankout.app/
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: easy-mcp-ai
  * Domain Path: /languages
  * Requires at least: 6.0
  * Requires PHP: 7.4
- * Update URI: false
+ * Update URI: https://rankout.app/wordpress-connector/
  */
 
-// Update URI: false (above) tells WordPress core's own update-checker to
-// never look for updates for this plugin from any source — without it,
-// WordPress still matches this fork against the original "easy-mcp-ai"
-// plugin (by folder/slug) and offers its updates in wp-admin. Since this
-// is a heavily modified fork (RankOut's own tools, RBAC, and dashboard
-// integration layered on top), installing that "update" would silently
-// overwrite all of it with the unmodified original. This header is the
-// officially documented way to opt a fork out of that entirely (WP 5.8+,
-// see https://make.wordpress.org/core/2021/06/29/introducing-update-uri-plugin-header-in-wordpress-5-8/).
+// A unique Update URI prevents WordPress.org from matching this fork to
+// another plugin with the legacy slug. GitHub_Updater supplies RankOut's
+// own release metadata and package to WordPress's standard update flow.
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
 if ( ! defined( 'EASY_MCP_AI_VERSION' ) ) {
-    define( 'EASY_MCP_AI_VERSION', '2.0.0' );
+    define( 'EASY_MCP_AI_VERSION', '2.0.1' );
 }
 if ( ! defined( 'EASY_MCP_AI_PLUGIN_FILE' ) ) {
     define( 'EASY_MCP_AI_PLUGIN_FILE', __FILE__ );

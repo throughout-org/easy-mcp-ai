@@ -1,0 +1,63 @@
+name: Release WordPress plugin
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate tag and PHP version
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag_version="${GITHUB_REF_NAME#v}"
+          header_version="$(sed -nE 's/^ \* Version:[[:space:]]+([^[:space:]]+).*/\1/p' easy-mcp-ai.php)"
+          constant_version="$(sed -nE "s/.*EASY_MCP_AI_VERSION', '([^']+)'.*/\1/p" easy-mcp-ai.php | head -1)"
+          test "$tag_version" = "$header_version"
+          test "$tag_version" = "$constant_version"
+          find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 php -l
+
+      - name: Build deterministic WordPress package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist/stage/easy-mcp-ai
+          cp -R assets includes languages easy-mcp-ai.php readme.txt uninstall.php dist/stage/easy-mcp-ai/
+          find dist/stage -name '.DS_Store' -delete
+          cd dist/stage
+          zip -X -r ../rankout-connector.zip easy-mcp-ai
+          cd ..
+          sha256sum rankout-connector.zip > rankout-connector.zip.sha256
+          rm -rf stage
+
+      - name: Attest release package
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: dist/rankout-connector.zip
+
+      - name: Create immutable-ready GitHub Release draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release create "$GITHUB_REF_NAME" \
+            dist/rankout-connector.zip \
+            dist/rankout-connector.zip.sha256 \
+            --verify-tag \
+            --generate-notes \
+            --title "RankOut Connector $GITHUB_REF_NAME" \
+            --draft
+          gh release edit "$GITHUB_REF_NAME" --draft=false --latest

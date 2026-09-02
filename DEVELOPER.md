@@ -1,7 +1,7 @@
 # Easy MCP AI — Developer Documentation
 
-> **Version:** 2.0.0 | **PHP:** 7.4+ | **WordPress:** 6.0+  
-> **Repo:** [throughout-org/easy-mcp-ai](https://github.com/throughout-org/easy-mcp-ai)  
+> **Version:** 2.0.1 | **PHP:** 7.4+ | **WordPress:** 6.0+
+> **Repo:** [throughout-org/rankout-connector](https://github.com/throughout-org/rankout-connector)
 > **Website:** [easymcpai.com](https://easymcpai.com)
 
 ---
@@ -505,7 +505,7 @@ ORDER BY post_date DESC LIMIT 10
 
 **How it works:**
 1. Hooks into `pre_set_site_transient_update_plugins` to inject update info
-2. Fetches `https://api.github.com/repos/throughout-org/easy-mcp-ai/releases/latest` (cached 12 h via transient `easy_mcp_ai_github_release`)
+2. Fetches `https://api.github.com/repos/throughout-org/rankout-connector/releases/latest` (cached 12 h)
 3. Compares remote `tag_name` (strip leading `v`) against `EASY_MCP_AI_VERSION`
 4. If remote is newer, injects an update object into WordPress's update transient
 5. WordPress handles the rest: update notice, one-click update, progress bar
@@ -662,4 +662,4 @@ Click **Check for Updates** in the plugin row on the Plugins page to bust the 12
 
 ---
 
-*For questions or contributions, open an issue at [github.com/throughout-org/easy-mcp-ai](https://github.com/throughout-org/easy-mcp-ai).*
+*For questions or contributions, open an issue at [github.com/throughout-org/rankout-connector](https://github.com/throughout-org/rankout-connector).*
