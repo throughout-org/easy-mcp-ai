@@ -181,9 +181,12 @@ class Plugin {
         require_once EASY_MCP_AI_PLUGIN_DIR . 'includes/admin/class-external-data-admin.php';
         require_once EASY_MCP_AI_PLUGIN_DIR . 'includes/admin/class-plugin-integration-registry.php';
         require_once EASY_MCP_AI_PLUGIN_DIR . 'includes/admin/class-plugin-integrations-page.php';
+        require_once EASY_MCP_AI_PLUGIN_DIR . 'includes/admin/class-sku-bulk-fix-page.php';
         new Admin\Admin_Page( $this->token_manager, $this->tool_registry );
         new Admin\Abilities_Page();
         new Admin\External_Data_Admin();
+        $sku_bulk_fix_page = new Admin\Sku_Bulk_Fix_Page();
+        \add_action( 'admin_menu', array( $sku_bulk_fix_page, 'register_submenu' ) );
         if ( \apply_filters( 'easy_mcp_ai_oauth_enabled', true ) ) {
             require_once EASY_MCP_AI_PLUGIN_DIR . 'includes/admin/class-oauth-admin.php';
             new Admin\OAuth_Admin();
