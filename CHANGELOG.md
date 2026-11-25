@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.0
+
+- Added `wp_get_seo_meta` / `wp_update_seo_meta` to read and write SmartCrawl Pro's per-post SEO title/description (`_wds_title`/`_wds_metadesc`) directly via `update_post_meta()`, without touching `post_content`, `post_title`, or `post_modified`.
+- Added `wp_bulk_update_seo_meta` to update SmartCrawl SEO fields on up to 20 posts/pages/products per call, continuing past individual item failures.
+- Added `wp_revert_seo_change` to undo a SmartCrawl SEO meta change from the existing change log, refusing to revert if the field was changed again since.
+- All new write tools default to a dry run (require `dry_run=false` and `confirm=true` to write), sanitise input (strip tags/shortcodes/Divi tokens, enforce length caps), and warn when outside recommended SERP lengths.
+
 ## 2.0.1
 
 - Rebranded the distribution as RankOut Connector.
