@@ -3,7 +3,7 @@
  * Plugin Name: RankOut Connector
  * Plugin URI:  https://rankout.app/wordpress-connector/
  * Description: Connect Claude, ChatGPT & any AI to WordPress. Manage your entire site by chat — content, media, GA4, Search Console, SEO, GEO, AEO, E-E-A-T & more. 233 tools. Free.
- * Version:     2.0.1
+ * Version:     2.1.0
  * Author:      RankOut
  * Author URI:  https://rankout.app/
  * License:     GPL-2.0-or-later
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'EASY_MCP_AI_VERSION' ) ) {
-    define( 'EASY_MCP_AI_VERSION', '2.0.1' );
+    define( 'EASY_MCP_AI_VERSION', '2.1.0' );
 }
 if ( ! defined( 'EASY_MCP_AI_PLUGIN_FILE' ) ) {
     define( 'EASY_MCP_AI_PLUGIN_FILE', __FILE__ );
