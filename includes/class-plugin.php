@@ -449,7 +449,7 @@ class Plugin {
             'users', 'site', 'menus', 'plugins', 'themes',
             'revisions', 'meta', 'search', 'blocks', 'cpt', 'templates', 'styles',
             'history', 'schema', 'filesystem', 'database', 'geo', 'aeo', 'eeat', 'reporting',
-            'site-health',
+            'site-health', 'seo/smartcrawl',
         );
 
         
@@ -472,6 +472,7 @@ class Plugin {
         }
         
         require_once EASY_MCP_AI_PLUGIN_DIR . 'includes/tools/users/trait-user-meta-auth-guard.php';
+        require_once EASY_MCP_AI_PLUGIN_DIR . 'includes/tools/seo/smartcrawl/trait-smartcrawl-seo.php';
 
         foreach ( $tool_dirs as $dir ) {
             $tool_path = EASY_MCP_AI_PLUGIN_DIR . 'includes/tools/' . $dir . '/';
